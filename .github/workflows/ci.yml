@@ -30,6 +30,7 @@ jobs:
         python -V
         javac -version
         java -version
+        printenv | sort
 
     - name: Run tests written in Python
       run: |
