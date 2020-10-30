@@ -23,8 +23,8 @@ jobs:
     - name: View environment
       run: |
         python -V
-        javac --version
-        java --version
+        javac -version
+        java -version
 
     - name: Run tests written in Python
       run: |
