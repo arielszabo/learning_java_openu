@@ -9,9 +9,11 @@ TESTS_CASES = [
 
 
 # We need this tweak for GitHub Actions, I wonder if we also need this on a Windows machine.
+print(os.platform)
 NL = "\n"
 if sys.platform == 'windows':
-  NL = "\r\n"
+    print("setting newline")
+    NL = "\r\n"
 
 @pytest.mark.parametrize("stdn,celsius,fahrenheit,kelvin", TESTS_CASES)
 def test_temperature(stdn, celsius, fahrenheit, kelvin):
