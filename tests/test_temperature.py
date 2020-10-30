@@ -11,7 +11,7 @@ TESTS_CASES = [
 # We need this tweak for GitHub Actions, I wonder if we also need this on a Windows machine.
 print(sys.platform)
 NL = "\n"
-if sys.platform == 'windows':
+if sys.platform == 'win32':
     print("setting newline")
     NL = "\r\n"
 
