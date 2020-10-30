@@ -20,6 +20,13 @@ jobs:
       with:
         python-version: 3.8
 
+    - name: View environment
+      run: |
+        python -V
+        javac --version
+        java --version
 
     - name: Run tests written in Python
-      run: pytest
+      run: |
+        pip install pytest
+        pytest
