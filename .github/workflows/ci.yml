@@ -35,4 +35,4 @@ jobs:
     - name: Run tests written in Python
       run: |
         pip install pytest
-        pytest -v
+        pytest -sv
