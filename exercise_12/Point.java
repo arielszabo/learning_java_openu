@@ -1,7 +1,7 @@
 /**
  * Represents 2 dimensional  points.
- * Author : EBP
- * Version : 6/11/2020
+ * Author : Ariel Szabo
+ * Version : 13/11/2020
  *
  */
 
@@ -9,6 +9,10 @@ public class Point
 {
     private double _radius;
     private double _alpha;
+    private final static double DEFAULT_CARTESIAN_SYSTEM_VALUE = 0.0; // TODO: ?? is private or public ? is x/y or alpha ?
+    private final static double RADIANS_TO_DEGREES_COEFFICIENT = 180.0 / Math.PI;
+    private final static double DEGREES_TO_RADIANS_COEFFICIENT = 1.0 / RADIANS_TO_DEGREES_COEFFICIENT;
+    private final static double ROUND_PRECISION_MULTIPLIER = 10000.0;
     /**
      * Constructor for objects of class Point. 
      * Construct a new point with the specified x y coordinates. 
@@ -17,8 +21,19 @@ public class Point
      * @param x The x coordinate
      * @param y The y coordinate
      */
-    public Point(double x, double y)   //  wdifsoifuosirt
+    public Point(double x, double y)
     {
+        if (x < 0) {
+            x = DEFAULT_CARTESIAN_SYSTEM_VALUE;
+        }
+
+        if (y < 0) {
+            y = DEFAULT_CARTESIAN_SYSTEM_VALUE;
+        }
+        
+        _radius = this.getRadius(x, y);
+        _alpha = this.getAlphaInDegrees(x, y);
+
     }
 
     /**
@@ -27,7 +42,30 @@ public class Point
      */
     public Point(Point other) 
     {
+        _radius = other._radius;
+        _alpha = other._alpha;
     }
+
+    private double getAlphaInDegrees(double x, double y) 
+    {
+        if ((x == 0.0) || (x == 0.0 && y == 0.0)){
+            return 90.0;
+        }
+        double alphaInRadians = Math.atan(y / x);
+        double alphaInDegrees = alphaInRadians * RADIANS_TO_DEGREES_COEFFICIENT;
+        return alphaInDegrees;
+    }
+
+    private double getAlphaInRadians()
+    {
+        return this._alpha * DEGREES_TO_RADIANS_COEFFICIENT;
+    }
+
+    private double getRadius(double x, double y)
+    {
+        return Math.sqrt(x * x + y * y);
+    }
+    
 
     /**
      * This method returns the x coordinate of the point.
@@ -35,7 +73,10 @@ public class Point
      */
     public double getX() 
     {
-        return 0.0;
+        // cosine alpha is the ratio between the adjacent side and the hypotenuse.     
+        double alphaInRadians = this.getAlphaInRadians();  // Math.cos expects degree in radians
+        double x = Math.cos(alphaInRadians) * this._radius;
+        return x;
     }
 
     /**
@@ -44,7 +85,10 @@ public class Point
      */
     public double getY() 
     {
-        return 0.0;
+        // sine alpha it is the ratio of the length of the side that is opposite that angle, to the length of the hypotenuse. 
+        double alphaInRadians = getAlphaInRadians(); // Math.cos expects degree in radians
+        double y = Math.sin(alphaInRadians) * this._radius;
+        return y;
     }
 
     /**
@@ -54,6 +98,11 @@ public class Point
      */
     public void setX (double x) 
     {
+        if (x >= 0) {
+            double y = this.getY();
+            _radius = this.getRadius(x, y);
+            _alpha = this.getAlphaInDegrees(x, y);
+        }
     }
 
     /**
@@ -63,6 +112,11 @@ public class Point
      */
     public void setY (double y) 
     {
+        if (y >= 0) {
+            double x = this.getX();
+            _radius = this.getRadius(x, y);
+            _alpha = this.getAlphaInDegrees(x, y); 
+        }
     }
 
     /**
@@ -72,7 +126,7 @@ public class Point
      */
     public boolean equals(Point other) 
     {
-        return false;
+        return this._alpha == other._alpha && this._radius == other._radius;
     }
 
     /**
@@ -82,7 +136,7 @@ public class Point
      */
     public boolean isAbove(Point other) 
     {
-        return false;
+        return this.getY() > other.getY();
     }
 
     /**
@@ -92,7 +146,7 @@ public class Point
      */
     public boolean isUnder(Point other) 
     {
-        return false;
+        return other.isAbove(this);
     }
 
     /**
@@ -102,7 +156,7 @@ public class Point
      */
     public boolean isLeft(Point other) 
     {
-        return false;
+        return this.getX() < other.getX();
     }
 
     /**
@@ -112,7 +166,7 @@ public class Point
      */
     public boolean isRight(Point other) 
     {
-        return false;
+        return other.isLeft(this);
     }
 
     /**
@@ -122,7 +176,10 @@ public class Point
      */
     public double distance(Point other) 
     {
-        return 0.0;
+        double xDiffInSecondPower = Math.pow(this.getX() - other.getX(), 2);
+        double yDiffInSecondPower = Math.pow(this.getY() - other.getY(), 2);
+        double pointsDistance = Math.sqrt(xDiffInSecondPower + yDiffInSecondPower); // TODO: rename
+        return pointsDistance;
     }
 
     /**
@@ -133,6 +190,12 @@ public class Point
      */
     public void move(double dx,double dy) 
     {
+        double newX = this.getX() + dx;
+        double newY = this.getY() + dy;
+        if (newX >= 0 && newY >= 0) {
+            _radius = this.getRadius(newX, newY);
+            _alpha = this.getAlphaInDegrees(newX, newY); 
+        }
     }
 
     /**
@@ -141,6 +204,12 @@ public class Point
      */
     public String toString()
     {
-        return "";
+        double x = this.getX();
+        x = Math.round(x * ROUND_PRECISION_MULTIPLIER) / ROUND_PRECISION_MULTIPLIER;
+        
+        double y = this.getY();
+        y = Math.round(y * ROUND_PRECISION_MULTIPLIER) / ROUND_PRECISION_MULTIPLIER;
+
+        return "(" + x + "," + y + ")";
     }
 }
