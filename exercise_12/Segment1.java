@@ -227,20 +227,33 @@ public class Segment1
      * @param other the reference segment
      * @return The overlap size
      */
-    public double overlap (Segment1 other)
-    {
-        Point otherLeftPoint = other.getPoLeft();
-        Point otherRightPoint = other.getPoRight();
+    public double overlap (Segment1 other) {
 
-        if ( this.pointOnSegment(otherLeftPoint) ) {
+        double thisLeftPointX = this._poLeft.getX();
+        double thisRightPointX = this._poLeft.getX();
+        double otherLeftPointX = other.getPoLeft().getX();
+        double otherRightPointX = other.getPoRight().getX();
+
+
+        if (thisLeftPointX > otherLeftPointX && thisRightPointX < otherLeftPointX) {
+            // this:     l____r
+            // other: l__________r
+            return thisRightPointX - thisLeftPointX;
+
+        } else if (thisLeftPointX < otherLeftPointX && thisRightPointX > otherLeftPointX) {
+            // this: l__________r
+            // other:   l____r
+            return otherRightPointX - otherLeftPointX;
+
+        } else if ( thisRightPointX < otherLeftPointX ) {
             // this: l_____r
             // other:   l____r
-            return this._poRight.getX() - otherLeftPoint.getX();
+            return thisRightPointX - otherLeftPointX;
 
-        } else if ( this.pointOnSegment(otherRightPoint) ) {
+        } else if ( thisLeftPointX > otherLeftPointX) {
             // this:     l_____r
             // other: l_____r
-            return otherRightPoint.getX() - this._poLeft.getX();
+            return otherRightPointX - thisLeftPointX;
 
         } else {
             //  l_____r  l_____r
