@@ -1,1 +1,1 @@
-# learning_java_openu
+# Open University's Java Class Exercises 2021
