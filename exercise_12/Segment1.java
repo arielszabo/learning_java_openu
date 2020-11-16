@@ -230,7 +230,7 @@ public class Segment1
     public double overlap (Segment1 other) {
 
         double thisLeftX = this._poLeft.getX();
-        double thisRightX = this._poLeft.getX();
+        double thisRightX = this._poRight.getX();
         double otherLeftX = other.getPoLeft().getX();
         double otherRightX = other.getPoRight().getX();
 
