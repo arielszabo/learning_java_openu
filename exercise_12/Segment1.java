@@ -229,31 +229,31 @@ public class Segment1
      */
     public double overlap (Segment1 other) {
 
-        double thisLeftPointX = this._poLeft.getX();
-        double thisRightPointX = this._poLeft.getX();
-        double otherLeftPointX = other.getPoLeft().getX();
-        double otherRightPointX = other.getPoRight().getX();
+        double thisLeftX = this._poLeft.getX();
+        double thisRightX = this._poLeft.getX();
+        double otherLeftX = other.getPoLeft().getX();
+        double otherRightX = other.getPoRight().getX();
 
 
-        if (thisLeftPointX > otherLeftPointX && thisRightPointX < otherLeftPointX) {
+        if (thisLeftX >= otherLeftX && thisRightX <= otherLeftX) {
             // this:     l____r
             // other: l__________r
-            return thisRightPointX - thisLeftPointX;
+            return thisRightX - thisLeftX;
 
-        } else if (thisLeftPointX < otherLeftPointX && thisRightPointX > otherLeftPointX) {
+        } else if (thisLeftX <= otherLeftX && thisRightX >= otherLeftX) {
             // this: l__________r
             // other:   l____r
-            return otherRightPointX - otherLeftPointX;
+            return otherRightX - otherLeftX;
 
-        } else if ( thisRightPointX < otherLeftPointX ) {
+        } else if ( thisRightX <= otherLeftX ) {
             // this: l_____r
             // other:   l____r
-            return thisRightPointX - otherLeftPointX;
+            return thisRightX - otherLeftX;
 
-        } else if ( thisLeftPointX > otherLeftPointX) {
+        } else if ( thisLeftX >= otherLeftX) {
             // this:     l_____r
             // other: l_____r
-            return otherRightPointX - thisLeftPointX;
+            return otherRightX - thisLeftX;
 
         } else {
             //  l_____r  l_____r
