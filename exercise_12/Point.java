@@ -9,10 +9,12 @@ public class Point
 {
     private double _radius;
     private double _alpha;
-    private final static double DEFAULT_CARTESIAN_SYSTEM_VALUE = 0.0; // TODO: ?? is private or public ? is x/y or alpha ?
+    private final static double DEFAULT_CARTESIAN_SYSTEM_VALUE = 0.0;
     private final static double RADIANS_TO_DEGREES_COEFFICIENT = 180.0 / Math.PI;
     private final static double DEGREES_TO_RADIANS_COEFFICIENT = 1.0 / RADIANS_TO_DEGREES_COEFFICIENT;
     private final static double ROUND_PRECISION_MULTIPLIER = 10000.0;
+    private final static double DEFAULT_ALPHA_IN_DEGREES = 90.0;
+
     /**
      * Constructor for objects of class Point. 
      * Construct a new point with the specified x y coordinates. 
@@ -48,8 +50,9 @@ public class Point
 
     private double getAlphaInDegrees(double x, double y) 
     {
-        if ((x == 0.0) || (x == 0.0 && y == 0.0)){
-            return 90.0;
+
+        if (x == 0.0){
+            return DEFAULT_ALPHA_IN_DEGREES;
         }
         double alphaInRadians = Math.atan(y / x);
         double alphaInDegrees = alphaInRadians * RADIANS_TO_DEGREES_COEFFICIENT;
@@ -63,6 +66,7 @@ public class Point
 
     private double getRadius(double x, double y)
     {
+        // using distance based on pythagoras theorem with (0,0) as the other point
         return Math.sqrt(x * x + y * y);
     }
     
@@ -178,7 +182,7 @@ public class Point
     {
         double xDiffInSecondPower = Math.pow(this.getX() - other.getX(), 2);
         double yDiffInSecondPower = Math.pow(this.getY() - other.getY(), 2);
-        double pointsDistance = Math.sqrt(xDiffInSecondPower + yDiffInSecondPower); // TODO: rename
+        double pointsDistance = Math.sqrt(xDiffInSecondPower + yDiffInSecondPower);
         return pointsDistance;
     }
 
@@ -204,12 +208,13 @@ public class Point
      */
     public String toString()
     {
-        double x = this.getX();
-        x = Math.round(x * ROUND_PRECISION_MULTIPLIER) / ROUND_PRECISION_MULTIPLIER;
-        
-        double y = this.getY();
-        y = Math.round(y * ROUND_PRECISION_MULTIPLIER) / ROUND_PRECISION_MULTIPLIER;
+        double x = this.roundNumber(this.getX());
+        double y = this.roundNumber(this.getY());
 
         return "(" + x + "," + y + ")";
+    }
+
+    private double roundNumber(double number) {
+        return Math.round(number * ROUND_PRECISION_MULTIPLIER) / ROUND_PRECISION_MULTIPLIER;
     }
 }
