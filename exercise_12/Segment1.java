@@ -240,12 +240,12 @@ public class Segment1
             // other: l__________r
             return thisRightX - thisLeftX;
 
-        } else if (thisLeftX <= otherLeftX && thisRightX >= otherLeftX) {
+        } else if (thisLeftX <= otherLeftX && otherRightX <= thisRightX) {
             // this: l__________r
             // other:   l____r
             return otherRightX - otherLeftX;
 
-        } else if ( thisRightX <= otherLeftX ) {
+        } else if ( thisRightX >= otherLeftX ) {
             // this: l_____r
             // other:   l____r
             return thisRightX - otherLeftX;
