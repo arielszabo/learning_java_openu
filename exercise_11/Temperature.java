@@ -25,27 +25,25 @@ public class Temperature
         char unitChar = scan.next().charAt(0);
         double inputTemperature = scan.nextDouble(); 
 
-        // define the temperature converting traget variables
+        // define the temperature converting target variables
         double celsiusTemperature;
         double fahrenheitTemperature;
         double kelvinTemperature;
 
-       switch(unitChar) {
-            case 'F': 
-                fahrenheitTemperature = inputTemperature;
-                celsiusTemperature = F_TO_C_COEFFICIENT * (fahrenheitTemperature + F_TO_C_INTERCEPT);
-                kelvinTemperature = celsiusTemperature + C_TO_K_INTERCEPT;
-                break;
-            case 'K':
-                kelvinTemperature = inputTemperature;
-                celsiusTemperature = kelvinTemperature - C_TO_K_INTERCEPT;
-                fahrenheitTemperature = C_TO_F_COEFFICIENT  * celsiusTemperature + C_TO_F_INTERCEPT;
-                break;
-            default: //case 'C':
-                celsiusTemperature = inputTemperature;
-                kelvinTemperature = celsiusTemperature + C_TO_K_INTERCEPT;
-                fahrenheitTemperature = C_TO_F_COEFFICIENT  * celsiusTemperature + C_TO_F_INTERCEPT;
-                break;
+        if (unitChar == 'F') {
+            fahrenheitTemperature = inputTemperature;
+            celsiusTemperature = F_TO_C_COEFFICIENT * (fahrenheitTemperature + F_TO_C_INTERCEPT);
+            kelvinTemperature = celsiusTemperature + C_TO_K_INTERCEPT;
+
+        } else if (unitChar == 'K'){
+            kelvinTemperature = inputTemperature;
+            celsiusTemperature = kelvinTemperature - C_TO_K_INTERCEPT;
+            fahrenheitTemperature = C_TO_F_COEFFICIENT  * celsiusTemperature + C_TO_F_INTERCEPT;
+            
+        } else { // unitChar is 'C'
+            celsiusTemperature = inputTemperature;
+            kelvinTemperature = celsiusTemperature + C_TO_K_INTERCEPT;
+            fahrenheitTemperature = C_TO_F_COEFFICIENT  * celsiusTemperature + C_TO_F_INTERCEPT;
 
        }
         System.out.println(celsiusTemperature + " C");

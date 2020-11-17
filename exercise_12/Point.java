@@ -9,6 +9,8 @@ public class Point
 {
     private double _radius;
     private double _alpha;
+
+    private final static double MINIMAL_CARTESIAN_SYSTEM_VALUE = 0.0;
     private final static double DEFAULT_CARTESIAN_SYSTEM_VALUE = 0.0;
     private final static double RADIANS_TO_DEGREES_COEFFICIENT = 180.0 / Math.PI;
     private final static double DEGREES_TO_RADIANS_COEFFICIENT = 1.0 / RADIANS_TO_DEGREES_COEFFICIENT;
@@ -25,11 +27,11 @@ public class Point
      */
     public Point(double x, double y)
     {
-        if (x < 0) {
+        if (x < MINIMAL_CARTESIAN_SYSTEM_VALUE) {
             x = DEFAULT_CARTESIAN_SYSTEM_VALUE;
         }
 
-        if (y < 0) {
+        if (y < MINIMAL_CARTESIAN_SYSTEM_VALUE) {
             y = DEFAULT_CARTESIAN_SYSTEM_VALUE;
         }
         
@@ -51,7 +53,7 @@ public class Point
     private double getAlphaInDegrees(double x, double y) 
     {
 
-        if (x == 0.0){
+        if (x == MINIMAL_CARTESIAN_SYSTEM_VALUE){
             return DEFAULT_ALPHA_IN_DEGREES;
         }
         double alphaInRadians = Math.atan(y / x);
@@ -102,7 +104,7 @@ public class Point
      */
     public void setX (double x) 
     {
-        if (x >= 0) {
+        if (x >= MINIMAL_CARTESIAN_SYSTEM_VALUE) {
             double y = this.getY();
             _radius = this.getRadius(x, y);
             _alpha = this.getAlphaInDegrees(x, y);
@@ -116,7 +118,7 @@ public class Point
      */
     public void setY (double y) 
     {
-        if (y >= 0) {
+        if (y >= MINIMAL_CARTESIAN_SYSTEM_VALUE) {
             double x = this.getX();
             _radius = this.getRadius(x, y);
             _alpha = this.getAlphaInDegrees(x, y); 
@@ -196,7 +198,7 @@ public class Point
     {
         double newX = this.getX() + dx;
         double newY = this.getY() + dy;
-        if (newX >= 0 && newY >= 0) {
+        if (newX >= MINIMAL_CARTESIAN_SYSTEM_VALUE && newY >= MINIMAL_CARTESIAN_SYSTEM_VALUE) {
             _radius = this.getRadius(newX, newY);
             _alpha = this.getAlphaInDegrees(newX, newY); 
         }

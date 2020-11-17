@@ -1,14 +1,15 @@
 /**
  * 
  * Segment2 represents a line (parallel to the x-axis) using a center point and length. 
- * Author :
- * Version :
+ * Author : Ariel Szabo
+ * Version : 13/11/2020
  *
  */
 public class Segment2 
 {
     private Point _poCenter;
     private double _length;
+    private static final double FLOATING_POINT_PRECISION_ACCEPTED_DIFFERANCE = 0.01;
 
     /**
      * Constructs a new segment using a center point and the segment length.
@@ -17,6 +18,8 @@ public class Segment2
      */
     public Segment2 (Point poCenter, double length)
     {
+        _poCenter = new Point(poCenter);
+        _length = length;
     }
 
     /**
@@ -26,6 +29,13 @@ public class Segment2
      */
     public Segment2 (Point left, Point right)
     {
+        // we assume the segment is parallel to the X axes so the length is the x axis diff
+        _length = right.getX() - left.getX();
+
+        // If the right point's Y axes is different from the left point's Y axes we would update it to be like the left.
+        double centerY = left.getY();
+        double centerX = left.getX() + _length / 2.0;
+        _poCenter = new Point(centerX, centerY);
     }
 
     /**
@@ -36,9 +46,15 @@ public class Segment2
      * @param rightX X value of right point
      * @param rightY Y value of right point
      */
-    public Segment2(double leftX ,double leftY, 
-    double rightX ,double rightY)
+    public Segment2(double leftX ,double leftY, double rightX ,double rightY)
     {
+        // we assume the segment is parallel to the X axes so the length is the x axis diff
+        _length = rightX - leftX;
+
+        double centerX = leftX + _length / 2.0;
+
+        // If the right point's Y axes is different from the left point's Y axes we would update it to be like the left.
+        _poCenter = new Point(centerX, leftY);
     }
 
     /**
@@ -48,6 +64,8 @@ public class Segment2
      */
     public Segment2 (Segment2 other)
     {
+        _length = other._length;
+        _poCenter = new Point(other._poCenter);
     }
 
     /**
@@ -56,7 +74,10 @@ public class Segment2
      */
     public Point getPoLeft()
     {
-        return null;
+        double centerX = _poCenter.getX();
+        double leftX = centerX - _length / 2.0;
+        Point poLeft = new Point(leftX, _poCenter.getY());
+        return poLeft;
     }
 
     /**
@@ -65,7 +86,11 @@ public class Segment2
      */
     public Point getPoRight()
     {
-        return null;
+        double centerX = _poCenter.getX();
+        double rightX = centerX + _length / 2.0;
+        Point poRight = new Point(rightX, _poCenter.getY());
+        return poRight;
+
     }
 
     /**
@@ -74,7 +99,7 @@ public class Segment2
      */
     public double getLength()
     {
-        return 0.0;
+        return _length;
     }
 
     /**
@@ -83,7 +108,9 @@ public class Segment2
      */
     public String toString()
     {   
-        return "";
+        Point poLeft = this.getPoLeft();
+        Point poRight = this.getPoRight();
+        return poLeft + "---" + poRight;
     }
 
     /**
@@ -93,7 +120,7 @@ public class Segment2
      */
     public boolean equals (Segment2 other)
     {
-        return false;
+        return this._poCenter.equals(other._poCenter) && this._length == other._length;
     }
 
     /**
@@ -103,7 +130,7 @@ public class Segment2
      */
     public boolean isAbove (Segment2 other)
     {
-        return false;
+        return this._poCenter.isAbove(other._poCenter);
     }
 
     /**
@@ -113,7 +140,7 @@ public class Segment2
      */
     public boolean isUnder (Segment2 other)
     {
-        return false;
+        return other.isAbove(this);
     }
 
     /**
@@ -123,7 +150,8 @@ public class Segment2
      */
     public boolean isLeft (Segment2 other)
     {
-        return false;
+        // true only if all the segment is left of other
+         return this.getPoRight().isLeft(other.getPoLeft());
     }
 
     /**
@@ -133,7 +161,8 @@ public class Segment2
      */
     public boolean isRight (Segment2 other) 
     {
-        return false;
+        // true only if all the segment is right of other
+        return this.getPoLeft().isRight(other.getPoRight());
     }
 
     /**
@@ -142,6 +171,15 @@ public class Segment2
      */
     public void moveHorizontal (double delta)
     {
+        // There is only need to check whether the left point passes the 0 or not. If it not then neither the right
+        // and if it is than the moment is not allowed ( it doesn't mather if the right point did)
+
+        // Movement is allowed only if coordinates remain in the first quadrant.
+        boolean isRemainingInFirstQuadrant = this.getPoLeft().getX() + delta >= 0;
+        if ( isRemainingInFirstQuadrant  )
+        {
+            _poCenter.move(delta, 0 );
+        }
     }
 
     /**
@@ -150,14 +188,35 @@ public class Segment2
      */
     public void moveVertical (double delta)
     {
-    }
+        // There is only need to check whether one of points passes the 0 or not because we assume they are
+        // parallel to the X axes
 
+        // movement is allowed only if coordinates remain in the first quadrant.
+        boolean isRemainingInFirstQuadrant = this.getPoLeft().getY() + delta >= 0;
+
+        if ( isRemainingInFirstQuadrant )
+        {
+            _poCenter.move(0 , delta);
+        }
+    }
     /**
      * Change the segment size by moving the right point by delta. 
      * @param delta the length change 
      */
     public void changeSize (double delta)
     {
+        Point poLeft = this.getPoLeft();
+
+        Point poRight = this.getPoRight();
+        poRight.move(delta, 0);
+
+        if ( poRight.getX() >= poLeft.getX() ) {
+            Segment2 newTemporarySegment = new Segment2(poLeft, poRight);
+
+            this._poCenter = new Point(newTemporarySegment._poCenter);
+            this._length = newTemporarySegment._length;
+        }
+
     }
 
     /**
@@ -165,9 +224,18 @@ public class Segment2
      * @param p a point to be checked
      * @return True if p is on this segment
      */
-    public boolean pointOnSegment (Point p) 
-    {   
-        return false;
+    public boolean pointOnSegment (Point p)
+    {
+        Point poLeft = this.getPoLeft();
+        Point poRight = this.getPoRight();
+
+        boolean isRightOrEqualToLeftPoint = p.isRight(poLeft) || p.equals(poLeft);
+        boolean isLeftOrEqualToRightPoint = p.isLeft(poRight) || p.equals(poRight);
+
+        // using this approximation to handle floating-point error
+        boolean haveSameYAxis = Math.abs(p.getY() - poLeft.getY()) < FLOATING_POINT_PRECISION_ACCEPTED_DIFFERANCE;
+
+        return isRightOrEqualToLeftPoint && isLeftOrEqualToRightPoint && haveSameYAxis ;
     }
 
     /**
@@ -177,7 +245,7 @@ public class Segment2
      */
     public boolean isBigger (Segment2 other)
     {
-        return false;
+        return this._length > other._length;
     }
 
     /**
@@ -187,7 +255,36 @@ public class Segment2
      */
     public double overlap (Segment2 other)
     {
-        return 0.0;
+        double thisLeftX = this.getPoLeft().getX();
+        double thisRightX = this.getPoRight().getX();
+        double otherLeftX = other.getPoLeft().getX();
+        double otherRightX = other.getPoRight().getX();
+
+
+        if (thisLeftX >= otherLeftX && thisRightX <= otherLeftX) {
+            // this:     l____r
+            // other: l__________r
+            return thisRightX - thisLeftX;
+
+        } else if (thisLeftX <= otherLeftX && thisRightX >= otherLeftX) {
+            // this: l__________r
+            // other:   l____r
+            return otherRightX - otherLeftX;
+
+        } else if ( thisRightX <= otherLeftX ) {
+            // this: l_____r
+            // other:   l____r
+            return thisRightX - otherLeftX;
+
+        } else if ( thisLeftX >= otherLeftX) {
+            // this:     l_____r
+            // other: l_____r
+            return otherRightX - thisLeftX;
+
+        } else {
+            //  l_____r  l_____r
+            return 0.0;
+        }
     }
 
     /**
@@ -197,6 +294,10 @@ public class Segment2
      */
     public double trapezePerimeter (Segment2 other)
     {
-        return 0.0;
+        double rightPointsDistance = this.getPoRight().distance(other.getPoRight());
+        double leftPointsDistance  = this.getPoLeft().distance(other.getPoLeft());
+
+        double perimeter = leftPointsDistance + this.getLength() + rightPointsDistance + other.getLength();
+        return perimeter;
     }
 }
