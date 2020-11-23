@@ -228,32 +228,31 @@ public class Segment1
      * @return The overlap size
      */
     public double overlap (Segment1 other) {
-
         double thisLeftX = this._poLeft.getX();
         double thisRightX = this._poRight.getX();
         double otherLeftX = other.getPoLeft().getX();
         double otherRightX = other.getPoRight().getX();
 
 
-        if (thisLeftX >= otherLeftX && thisRightX <= otherLeftX) {
+        if (otherLeftX <= thisLeftX && thisRightX <= otherRightX) {
             // this:     l____r
             // other: l__________r
             return thisRightX - thisLeftX;
+
+        else if (otherLeftX <= thisLeftX && thisRightX > otherRightX) {
+            // this:     l_____r
+            // other: l_____r
+            return otherRightX - thisLeftX;
 
         } else if (thisLeftX <= otherLeftX && otherRightX <= thisRightX) {
             // this: l__________r
             // other:   l____r
             return otherRightX - otherLeftX;
 
-        } else if ( thisRightX >= otherLeftX ) {
+        } else if ( thisLeftX <= otherLeftX && otherRightX > thisRightX ) {
             // this: l_____r
             // other:   l____r
             return thisRightX - otherLeftX;
-
-        } else if ( thisLeftX >= otherLeftX) {
-            // this:     l_____r
-            // other: l_____r
-            return otherRightX - thisLeftX;
 
         } else {
             //  l_____r  l_____r
