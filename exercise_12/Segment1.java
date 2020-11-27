@@ -239,7 +239,7 @@ public class Segment1
             // other: l__________r
             return thisRightX - thisLeftX;
 
-        else if (otherLeftX <= thisLeftX && thisRightX > otherRightX) {
+        } else if (otherLeftX <= thisLeftX && thisRightX > otherRightX && otherRightX >= thisLeftX) {
             // this:     l_____r
             // other: l_____r
             return otherRightX - thisLeftX;
@@ -249,7 +249,7 @@ public class Segment1
             // other:   l____r
             return otherRightX - otherLeftX;
 
-        } else if ( thisLeftX <= otherLeftX && otherRightX > thisRightX ) {
+        } else if ( thisLeftX <= otherLeftX && otherRightX > thisRightX && thisRightX >= otherLeftX) {
             // this: l_____r
             // other:   l____r
             return thisRightX - otherLeftX;
@@ -257,6 +257,7 @@ public class Segment1
         } else {
             //  l_____r  l_____r
             return 0.0;
+        }
     }
 
     /**
