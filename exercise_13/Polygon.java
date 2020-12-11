@@ -7,9 +7,9 @@
 
 public class Polygon {
 
-    private Point [] _vertices;
+    private Point[] _vertices;
     private int _noOfVertices;
-    private final int MAX_VERTICES = 10;
+    private final static int MAX_VERTICES = 10;
 
 
     /**
@@ -17,7 +17,7 @@ public class Polygon {
      * Construct a new empty polygon.
      */
     public Polygon() {
-        this._vertices = new Point[this.MAX_VERTICES];
+        this._vertices = new Point[MAX_VERTICES];
         this._noOfVertices = 0;
     }
 
@@ -28,7 +28,7 @@ public class Polygon {
      * @return true if the point was added and false if no space found for the point in the vertices list
      */
     public boolean addVertex(double x, double y) {
-        if (this._noOfVertices == this.MAX_VERTICES) {
+        if (this._noOfVertices == MAX_VERTICES) {
             return false;
         } else {
             this._vertices[this._noOfVertices] = new Point(x, y);
