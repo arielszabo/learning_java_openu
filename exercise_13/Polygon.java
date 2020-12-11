@@ -61,15 +61,18 @@ public class Polygon {
     public String toString() {
         if (this._noOfVertices == 0) {
             return "The polygon has 0 vertices.";
+
         } else {
-            String string_ = "The polygon has " + this._noOfVertices + " vertices:\n(";
+
+            String string_ = "The polygon has " + this._noOfVertices + " vertices:\n";
+            string_ += "(";  // the opening parentheses
             for (int i = 0; i < this._noOfVertices; i++) {
                 if (i != 0){  // add a separating comma before each vertex but the first one.
                     string_ += ",";
                 }
                 string_ += this._vertices[i];
             }
-            string_ += ")";  // the closing Parentheses
+            string_ += ")";  // the closing parentheses
             return string_;
         }
     }
