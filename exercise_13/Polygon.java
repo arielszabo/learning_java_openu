@@ -42,16 +42,19 @@ public class Polygon {
      * @return the highest vertex
      */
     public Point highestVertex() {
-        Point highestVertex = null;
-        for (int i = 0; i < this._noOfVertices; i++) {
+        if (this._noOfVertices == 0) {
+            return null;
+        }
+
+        Point highestVertex = this._vertices[0];
+        // set the highest vertex to be the first point, this will change in the next loop if a higher point is found
+        for (int i = 1; i < this._noOfVertices; i++) { // iterate from the second index, skip the first
             Point vertex = this._vertices[i];
-            if (!(highestVertex instanceof Point)){
-                highestVertex = vertex;
-            } else if (highestVertex.isUnder(vertex)) {
+            if (highestVertex.isUnder(vertex)) {
                 highestVertex = vertex;
             }
         }
-        return highestVertex;
+        return new Point(highestVertex);
     }
 
     /**
