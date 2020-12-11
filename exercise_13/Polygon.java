@@ -129,18 +129,18 @@ public class Polygon {
     }
 
     private double getTriangleArea(Point vertex1, Point vertex2, Point vertex3) {
-        // TODO: rename
-
         // Heron's formula states that the area of a triangle whose sides have lengths a, b, and c is:
         // (s(s-a)(s-b)(s-c))^0.5
-        // where s is the s is half of the perimeter.
+        // where s is half of the perimeter (semi perimeter).
         double edge1Length = vertex1.distance(vertex2);
         double edge2Length = vertex1.distance(vertex3);;
         double edge3Length = vertex2.distance(vertex3);
         double perimeter = edge1Length + edge2Length + edge3Length;
-        double perimeterHalf = perimeter / 2.0;
-        double x = perimeterHalf * (perimeterHalf - edge1Length) * (perimeterHalf - edge2Length) * (perimeterHalf - edge3Length);
-        return Math.sqrt(x);
+        double semiPerimeter = perimeter / 2.0;
+        return Math.sqrt(
+                semiPerimeter *
+                        (semiPerimeter - edge1Length) * (semiPerimeter - edge2Length) * (semiPerimeter - edge3Length)
+        );
     }
 
     /**
