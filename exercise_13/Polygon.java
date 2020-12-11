@@ -85,27 +85,25 @@ public class Polygon {
      * @return the calculated polygon's perimeter
      */
     public double calcPerimeter() {
-        if (this._noOfVertices < 2) {
+        if (this._noOfVertices <= 1) {
             return 0;
+        }
+
+        if (this._noOfVertices == 2) { // if only 2 vertices the perimeter is the distance between the vertices.
+            return this._vertices[0].distance(this._vertices[1]);
         }
 
         double perimeter = 0;
 
         // iterate over the vertices (starting with the 2nd vertex) and calculate the distance to the previous vertex.
-        Point prevVertex = this._vertices[0];
         for (int i = 1; i < this._noOfVertices; i++) {
             Point vertex = this._vertices[i];
+            Point prevVertex = this._vertices[i - 1];
             double distanceFromPrevVertex = prevVertex.distance(vertex);
             perimeter += distanceFromPrevVertex;
-            prevVertex = vertex;
-
         }
 
-        if (this._noOfVertices == 2) { // if only 2 vertices there is no need to close the Polygon's perimeter
-            return perimeter;
-        }
-
-        // Close the Polygon's perimeter by adding the distance of the last vertex to the first one to
+        // Close the Polygon's perimeter by adding the distance of the last vertex to the first one
         Point firstVertex = this._vertices[0];
         Point LastVertex = this._vertices[this._noOfVertices - 1];
         double firstToLastVertexDistance = firstVertex.distance(LastVertex);
