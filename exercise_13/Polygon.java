@@ -120,6 +120,9 @@ public class Polygon {
         if (this._noOfVertices < 3) {
             return 0;
         }
+
+        // split the polygon vertices to triangles originating from the same first point
+        // iterate over the triangles and calculate their area using Heron's formula:
         double area = 0;
         Point originVertex = this._vertices[0];
         for (int j = 1; j < this._noOfVertices - 1; j++){
@@ -209,14 +212,15 @@ public class Polygon {
             return null;
         }
 
+        // set the default min and max x and y values to be the first vertex's values, will change in the following loop
+        Point firstVertex = this._vertices[0];
+        double minimumX = firstVertex.getX();
+        double minimumY = firstVertex.getY();
+        double maxX = firstVertex.getX();
+        double maxY = firstVertex.getY();
 
-        double minimumX = 10000; //
-        double minimumY = 10000;
-        double maxX = 0;
-        double maxY = 0;
-        // find the highest and lowest X and Y coordinates:
-        // TODO: use Math.max / Math.min
-        for (int i = 0; i < this._noOfVertices; i++) {
+        // iterate over the remaining vertices, find and change the highest and lowest X and Y coordinates:
+        for (int i = 1; i < this._noOfVertices; i++) {
             Point vertex = this._vertices[i];
             double vertexX = vertex.getX();
             double vertexY = vertex.getY();
@@ -229,8 +233,7 @@ public class Polygon {
                 maxX = vertexX;
             }
 
-
-            if (vertexY < minimumY ) {
+            if (vertexY < minimumY) {
                 minimumY = vertexY;
             }
 
