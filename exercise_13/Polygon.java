@@ -13,6 +13,7 @@ public class Polygon {
 
 
     /**
+     * Constructor for objects of class Polygon.
      * Construct a new empty polygon.
      */
     public Polygon() {
@@ -21,10 +22,10 @@ public class Polygon {
     }
 
     /**
-     * Adds a new Point to the Polygon vertices list end.
+     * Adds a new point to the polygon vertices list at it's end.
      * @param x the X coordinate of the new Point
      * @param y the Y coordinate of the new Point
-     * @return true if the point was added and false if no space found fo the point in the vertices list
+     * @return true if the point was added and false if no space found for the point in the vertices list
      */
     public boolean addVertex(double x, double y) {
         if (this._noOfVertices == this.MAX_VERTICES) {
@@ -37,8 +38,8 @@ public class Polygon {
     }
 
     /**
-     * Get the first highest Polygon
-     * @return the highest point
+     * Get the first highest vertex in the polygon.
+     * @return the highest vertex
      */
     public Point highestVertex() {
         Point highestVertex = null;
@@ -54,8 +55,8 @@ public class Polygon {
     }
 
     /**
-     * Create a string representation of the Polygon's Points
-     * @return the Polygon's string representation
+     * Returns a string representation of the polygon's points.
+     * @return The polygon's string representation
      */
     public String toString() {
         if (this._noOfVertices == 0) {
@@ -74,8 +75,8 @@ public class Polygon {
     }
 
     /**
-     * Calculate the Polygon's perimeter.
-     * @return the calculated Polygon's perimeter
+     * Calculate the polygon's perimeter.
+     * @return the calculated polygon's perimeter
      */
     public double calcPerimeter() {
         if (this._noOfVertices < 2) {
@@ -108,8 +109,8 @@ public class Polygon {
     }
 
     /**
-     * Calculates the Polygon's area.
-     * @return the Polygon's area
+     * Calculates the polygon's area.
+     * @return the polygon's area
      */
     public double calcArea() {
         if (this._noOfVertices < 3) {
@@ -144,7 +145,7 @@ public class Polygon {
     }
 
     /**
-     * Determines if this Polygon's area is bigger than the other Polygon's area.
+     * Determines if this Polygon's area is bigger than the other polygon's area.
      * @param other Polygon to compare
      * @return true if this polygon has bigger area false otherwise
      */
@@ -169,10 +170,10 @@ public class Polygon {
 
     /**
      * Find and return the next vertex in the polygon.
-     * if the point not found returns null.
+     * if the point is not found returns null.
      * if the only point is the one given, returns the point itself.
      *
-     * @param p point used to find the next one in the polygon vertices.
+     * @param p point used to find the next one in the polygon's vertices.
      * @return the next vertex in the polygon if exists, null if not found, and the point itself if it's the only one.
      */
     public Point getNextVertex(Point p) {
@@ -197,7 +198,7 @@ public class Polygon {
      * Creates the polygon's bounding box polygon object if there are at least 3 vertices.
      * The bounding box is parallel to the X and Y axes.
      *
-     * @return the polygon's bounding box polygon object or null if less than 3 vertices.
+     * @return the polygon's bounding box polygon object or null if the polygon has less than 3 vertices.
      */
     public Polygon getBoundingBox() {
         if (this._noOfVertices < 3) {
