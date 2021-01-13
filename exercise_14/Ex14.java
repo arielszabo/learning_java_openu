@@ -95,24 +95,23 @@ public class Ex14 {
      * if no subarray found the method returns -1.
      *
      *
-     * The time-complexity of this method is O(n) and the memory-complexity of this method is O(1).
-     * (explanations inside)
+     * Although we use a for-loop inside a for-loop the time-complexity of this method is O(n) and not O(n^2):
+     * we are using two "pointers" pointing to the two ends of the subarray.
+     * A "head" which points to the end index of the subarray and a "tail" which points to the start index of the
+     * subarray.
+     * At each step of the outside loop the "head" moves forward by one (so that's N steps).
+     * at each step we can ge inside the inner loop where we'll increment the tail by one at each inner-loop, meaning
+     * the "tail" can move forward up to the pointer of the "head".
+     * Like a snake growing and shrinking - so, in any case this is 2*N steps, which is O(n).
+     *
+     * The memory-complexity of this method is O(1) because we only store integer values in variables.
      *
      * @param arr array with positive integer values
      * @param x a positive integer
      * @return smallest subarray which values sum is bigger than x, if not found returns -1
      */
     public static int smallestSubSum(int arr[], int x) {
-        // Although we use a for-loop inside a for-loop the time-complexity of this method is O(n) and not O(n^2):
-        // we are using two "pointers" pointing to the two ends of the subarray.
-        // A "head" which points to the end index of the subarray and a "tail" which points to the start index of the
-        // subarray.
-        // At each step of the outside loop the "head" moves forward by one (so that's N steps).
-        // at each step we can ge inside the inner loop where we'll increment the tail by one at each inner-loop,
-        // meaning the "tail" can move forward up to the pointer of the "head".
-        // Like a snake growing and shrinking - so, in any case this is 2*N steps, which is O(n).
 
-        // The memory-complexity of this method is O(1) because we only store integer values in variables.
 
         int minSubarrayLength = Integer.MAX_VALUE; // default value denoting no subarray found
         int subArrayStart = 0;
