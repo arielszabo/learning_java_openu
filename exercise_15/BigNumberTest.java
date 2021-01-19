@@ -77,11 +77,32 @@ public class BigNumberTest {
 
     @Test
     public void subtractBigNumber() {
+        BigNumber b1 = new BigNumber();
+        BigNumber b2 = new BigNumber(123456789L);
+        assertEquals("123456789", b2.subtractBigNumber(b1).toString());
+        assertEquals("123456789", b1.subtractBigNumber(b2).toString());
 
+
+        BigNumber b3 = new BigNumber(1023456789L);
+        assertEquals("900000000", b3.subtractBigNumber(b2).toString());
+
+        BigNumber b4 = new BigNumber(10289L);
+        assertEquals("123446500", b4.subtractBigNumber(b2).toString());
+
+        BigNumber b4 = new BigNumber(100000087L);
+        assertEquals("23456702", b4.subtractBigNumber(b2).toString());
     }
 
     @Test
     public void multBigNumber() {
+        BigNumber b1 = new BigNumber();
+        BigNumber b2 = new BigNumber(123456789L);
+        assertEquals("0", b2.multBigNumber(b1).toString());
+        assertEquals("0", b1.multBigNumber(b2).toString());
+
+        BigNumber b3 = new BigNumber(1000087L);
+        assertEquals("123467530000000", b3.multBigNumber(b2).toString());
+
 
     }
 
