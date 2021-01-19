@@ -87,6 +87,7 @@ public class BigNumber {
                 thisCurrentValue = 0;
             } else {
                 thisCurrentValue = thisCurrent.getValue();
+                thisCurrent = thisCurrent.getNext();
             }
 
             int otherCurrentValue;
@@ -94,10 +95,11 @@ public class BigNumber {
                 otherCurrentValue = 0;
             } else {
                 otherCurrentValue = otherCurrent.getValue();
+                otherCurrent = otherCurrent.getNext();
             }
 
             int newNumber = thisCurrentValue + otherCurrentValue + reminder;
-            if (newNumber == 0) {
+            if (newNumber == 0 & thisCurrent == null & otherCurrent == null) { // reached the end of both numbers
                 break;
             }
 
@@ -107,8 +109,6 @@ public class BigNumber {
             } else {
                 reminder = 0;
             }
-            thisCurrent = thisCurrent.getNext();
-            otherCurrent = otherCurrent.getNext();
 
             IntNode node = new IntNode(newNumber);
             if (newHead == null) {
