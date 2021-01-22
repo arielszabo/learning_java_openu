@@ -318,6 +318,11 @@ public class BigNumber {
     }
 
     public BigNumber multBigNumber (BigNumber other) {
+
+        if ( this.isNumberEqualsZero() || other.isNumberEqualsZero()) {
+            return new BigNumber();
+        }
+
         // Let's denote this BigNumber length by n and other's length as m
 
         BigNumber newBigNumber = null;
@@ -344,7 +349,7 @@ public class BigNumber {
             }
 
             if (lastAdditionalPrefixZero != null ) {
-                lastAdditionalPrefixZero.setNext(null);  // remove the link
+                lastAdditionalPrefixZero.setNext(null);  // remove the link and keep only the zeros
             }
 
             IntNode zeroNode = new IntNode(0);
@@ -390,14 +395,31 @@ public class BigNumber {
             node = node.getNext();
         }
 
+        if (reminder != 0) {
+            prevNode.setNext(new IntNode(reminder));
+        }
+
         return newHead;
     }
 
     private BigNumber getBigNumberFromHead(IntNode headNode) {
         BigNumber bigNumber = new BigNumber();
+        if (headNode == null)
+            return bigNumber;
         bigNumber._head.setValue(headNode.getValue());
         bigNumber._head.setNext(headNode.getNext());
         return bigNumber;
+    }
+
+    private boolean isNumberEqualsZero() {
+        if (_head == null) {
+            return true;
+        }
+        if (_head.getNext() == null &&_head.getValue() == 0){
+            return true;
+        }
+
+        return false;
     }
 
 }
