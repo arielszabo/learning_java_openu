@@ -30,7 +30,23 @@ public class BigNumber {
     }
 
     public BigNumber(BigNumber other) {
-        _head = new IntNode(other._head.getValue(), other._head.getNext());
+        _head = null;
+        IntNode prevNode = null;
+
+        IntNode otherNode = other._head;
+        while (otherNode != null) {
+            IntNode newNode = new IntNode(otherNode.getValue());
+
+            if (_head == null) {
+                _head = newNode;
+                prevNode = _head;
+            } else {
+                prevNode.setNext(newNode);
+                prevNode = newNode;
+            }
+
+            otherNode = otherNode.getNext();
+        }
     }
 
     public String toString() {
