@@ -139,9 +139,7 @@ public class BigNumber {
 
 
         }
-        BigNumber newBigNumber = new BigNumber();
-        newBigNumber._head.setValue(newHead.getValue());
-        newBigNumber._head.setNext(newHead.getNext());
+        BigNumber newBigNumber = getBigNumberFromHead(newHead);
         return newBigNumber;
     }
 
@@ -198,7 +196,68 @@ public class BigNumber {
     }
 
     public BigNumber multBigNumber (BigNumber other) {
-        return null;
+        // Let's denote this BigNumber length by n and other's length as m
+
+        BigNumber newBigNumber = null;
+
+        IntNode otherNode = other._head;
+        int additionalPrefixZeros = 0;
+        while (otherNode != null) {  // O(m)
+            IntNode bigNumberAndDigitResultHead = getBigNumberAndDigitMultiplicationHead(this, otherNode.getValue()); // O(n)
+            for (int i = 0; i < additionalPrefixZeros; i++) { // O(n) ?
+                bigNumberAndDigitResultHead = new IntNode(0, bigNumberAndDigitResultHead); // add a zero .. explain
+            }
+            BigNumber bigNumberAndDigitResult = getBigNumberFromHead(bigNumberAndDigitResultHead);
+
+            if (newBigNumber == null) {
+                newBigNumber = bigNumberAndDigitResult;
+            } else {
+                newBigNumber = newBigNumber.addBigNumber(bigNumberAndDigitResult); // O(n)
+            }
+
+            additionalPrefixZeros++;
+            otherNode = otherNode.getNext();
+        }
+
+        return newBigNumber;
+    }
+
+    private IntNode getBigNumberAndDigitMultiplicationHead(BigNumber bigNumber, int digit) {
+        IntNode newHead = null;
+        IntNode prevNode = null;
+
+        IntNode node = bigNumber._head;
+        int reminder = 0;
+
+        while (node != null) {
+            int result = node.getValue() * digit + reminder;
+
+            if (result >= 10) {
+                reminder = result / 10;
+                result = result % 10;
+            } else {
+                reminder = 0;
+            }
+
+            IntNode newNode = new IntNode(result);
+            if (newHead == null) {
+                newHead = newNode;
+                prevNode = newHead;
+            } else {
+                prevNode.setNext(newNode);
+                prevNode = newNode;
+            }
+            node = node.getNext();
+        }
+
+        return newHead;
+    }
+
+    private BigNumber getBigNumberFromHead(IntNode headNode) {
+        BigNumber bigNumber = new BigNumber();
+        bigNumber._head.setValue(headNode.getValue());
+        bigNumber._head.setNext(headNode.getNext());
+        return bigNumber;
     }
 
     private int length() {
