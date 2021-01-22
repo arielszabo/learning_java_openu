@@ -54,10 +54,10 @@ public class BigNumber {
     }
 
     private String toString(IntNode node) {
+        if (node == null)
+            return "";
+
         IntNode nextNode = node.getNext();
-        if (nextNode == null) {
-            return "" + node.getValue();  // adding the empty string to convert the node integer value to string
-        }
         return toString(nextNode) + "" + node.getValue(); // adding the empty string to convert the node integer value to string
     }
 
@@ -93,7 +93,6 @@ public class BigNumber {
 
             thisNode = thisNode.getNext();
             otherNode = otherNode.getNext();
-
 
         }
 
