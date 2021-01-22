@@ -132,13 +132,56 @@ public class BigNumberTest {
     public void multBigNumber() {
         BigNumber b1 = new BigNumber();
         BigNumber b2 = new BigNumber(123456789L);
-        // assertEquals("0", b2.multBigNumber(b1).toString());
-        // assertEquals("0", b1.multBigNumber(b2).toString());
+        assertEquals("0", b2.multBigNumber(b1).toString());
+        assertEquals("0", b1.multBigNumber(b2).toString());
 
         BigNumber b3 = new BigNumber(1087L);
         assertEquals("134197529643", b3.multBigNumber(b2).toString());
 
+        BigNumber bigNumber1 = new BigNumber(150);
+        BigNumber bigNumber2 = new BigNumber(10);
+        assertEquals("1500", bigNumber1.multBigNumber(bigNumber2).toString());
+
+        BigNumber bigNumber3 = new BigNumber(5879);
+        assertEquals("8818500", bigNumber3.multBigNumber(bigNumber2.multBigNumber(bigNumber1)).toString());
+
+        BigNumber bigNumber4 = new BigNumber(1);
+        BigNumber bigNumber5 = new BigNumber(10879);
+        assertEquals("10879", bigNumber4.multBigNumber(bigNumber5).toString());
+
+        BigNumber bigNumber6 = new BigNumber(0);
+        BigNumber bigNumber7 = new BigNumber(10879);
+        assertEquals("0", bigNumber7.multBigNumber(bigNumber6).toString());
+        assertEquals("0", bigNumber6.multBigNumber(bigNumber7).toString());
+
+        BigNumber bigNumber8 = new BigNumber(8912379123L);
+        assertEquals("96957772479117", bigNumber8.multBigNumber(bigNumber7).toString());
+
+        BigNumber bigNumber9 = new BigNumber(0);
+        BigNumber bigNumber10 = new BigNumber(0);
+        assertEquals("0", bigNumber10.multBigNumber(bigNumber9).toString());
+
+        BigNumber bigNumber11 = new BigNumber(2);
+        BigNumber bigNumber12 = new BigNumber(4);
+        assertEquals(0, bigNumber11.multBigNumber(bigNumber11).compareTo(bigNumber12));
+
+        bigNumber11 = bigNumber11.addBigNumber(new BigNumber(bigNumber11));
+        bigNumber12 = bigNumber12.multBigNumber(bigNumber12);
+        assertEquals(0, bigNumber11.multBigNumber(bigNumber11).compareTo(bigNumber12));
+
+        bigNumber11 = bigNumber11.addBigNumber(new BigNumber(bigNumber11));
+        assertEquals(1, bigNumber11.multBigNumber(bigNumber11).compareTo(bigNumber12));
+
+        BigNumber bigNumber13 = new BigNumber(999);
+        BigNumber bigNumber14 = new BigNumber(1003);
+        assertEquals("1001997", bigNumber13.multBigNumber(bigNumber14).toString());
 
     }
 
+
+    //  123
+    //   11
+    //  ___
+    //  123
+    // 1230
 }
