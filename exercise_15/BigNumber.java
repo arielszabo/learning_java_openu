@@ -366,13 +366,4 @@ public class BigNumber {
         return bigNumber;
     }
 
-    private int length() {
-        int counter = 0;
-        IntNode temp = _head;
-        while (temp != null) {
-            temp = temp.getNext();
-            counter++;
-        }
-        return counter;
-    }
 }
