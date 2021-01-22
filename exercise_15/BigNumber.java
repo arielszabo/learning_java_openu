@@ -307,12 +307,18 @@ public class BigNumber {
         BigNumber newBigNumber = null;
 
         IntNode otherNode = other._head;
-        int additionalPrefixZeros = 0;
+        IntNode firstAdditionalPrefixZero = null;
+        IntNode lastAdditionalPrefixZero = null;
         while (otherNode != null) {  // O(m)
             IntNode bigNumberAndDigitResultHead = getBigNumberAndDigitMultiplicationHead(this, otherNode.getValue()); // O(n)
-            for (int i = 0; i < additionalPrefixZeros; i++) { // O(n) ?
-                bigNumberAndDigitResultHead = new IntNode(0, bigNumberAndDigitResultHead); // add a zero .. explain
+            if (firstAdditionalPrefixZero != null) {
+
+                lastAdditionalPrefixZero.setNext(bigNumberAndDigitResultHead);
+
+                bigNumberAndDigitResultHead = firstAdditionalPrefixZero; // add a zero .. explain
+
             }
+
             BigNumber bigNumberAndDigitResult = getBigNumberFromHead(bigNumberAndDigitResultHead);
 
             if (newBigNumber == null) {
@@ -321,7 +327,19 @@ public class BigNumber {
                 newBigNumber = newBigNumber.addBigNumber(bigNumberAndDigitResult); // O(n)
             }
 
-            additionalPrefixZeros++;
+            if (lastAdditionalPrefixZero != null ) {
+                lastAdditionalPrefixZero.setNext(null);  // remove the link
+            }
+
+            IntNode zeroNode = new IntNode(0);
+
+            if (firstAdditionalPrefixZero == null) {
+                firstAdditionalPrefixZero = zeroNode;
+                lastAdditionalPrefixZero = firstAdditionalPrefixZero;
+            } else {
+                lastAdditionalPrefixZero.setNext(zeroNode);
+                lastAdditionalPrefixZero = zeroNode;
+            }
             otherNode = otherNode.getNext();
         }
 
