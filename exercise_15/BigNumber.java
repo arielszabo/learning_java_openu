@@ -192,7 +192,113 @@ public class BigNumber {
     }
 
     public BigNumber subtractBigNumber (BigNumber other) {
-        return null;
+        // detemine who is bigger
+        // loop over all nodes in the bigger number and subtract the corresponding place in the samller number
+        // subtract the digits and if the value (we add the "reminder" from the last operation) is bigger/equal than 0
+        // add it to the new number.
+        // if the value is lower than 0 keep it (as a "reminder") and continue to the next iteration
+        // when the smaller number ends just keep adding the digits from the bigger number if like the smaller number had 0as digits
+
+        int thisCompareToResult = this.compareTo(other);
+        BigNumber biggerNumber;
+        BigNumber smallerNumber;
+        if (thisCompareToResult == 1) {
+
+            biggerNumber = this;
+            smallerNumber = other;
+
+        } else if (thisCompareToResult == -1) {
+
+            biggerNumber = other;
+            smallerNumber = this;
+
+        } else {
+            // the numbers are equal so we'll initialize a BigNumber with 0 (the default constractor):
+            return new BigNumber();
+        }
+
+        IntNode zeroNodesHead = null;
+        IntNode lastZeroNode = null;
+
+        IntNode newHead = null;
+        IntNode prevNode = null; // TODO:
+
+        IntNode biggerNumberNode = biggerNumber._head;
+        IntNode smallerNumberNode = smallerNumber._head;
+        int reminder = 0; // TODO: rename
+        while (biggerNumberNode != null) {
+
+            int biggerNumberNodeValue = biggerNumberNode.getValue();
+            biggerNumberNode = biggerNumberNode.getNext();
+
+            int smallerNumberNodeValue;
+            if (smallerNumberNode == null) {
+                smallerNumberNodeValue = 0;
+            } else {
+                smallerNumberNodeValue = smallerNumberNode.getValue();
+                smallerNumberNode = smallerNumberNode.getNext();
+            }
+
+            int diff = biggerNumberNodeValue - smallerNumberNodeValue - reminder;
+
+            if (diff == 0 & biggerNumberNode == null & smallerNumberNode == null) { // reached the end of both numbers
+                break;
+            }
+
+            if (diff == 0){
+                if (zeroNodesHead == null){
+                    zeroNodesHead = new IntNode(0);  // add the first zero node
+                    lastZeroNode = zeroNodesHead;
+                } else {
+                    IntNode newZeroNode = new IntNode(0);
+                    lastZeroNode.setNext(newZeroNode); // add another zero node to the end of the zero node
+                    lastZeroNode = newZeroNode;
+                }
+                reminder = 0;
+                continue;
+            }
+
+            if (diff > 0){
+                reminder = 0;
+            } else {
+                diff = 10 + diff; // diff is minus number  change number ...
+                reminder = 1;
+            }
+
+
+            IntNode node = new IntNode(diff);
+
+            if (newHead == null && lastZeroNode != null) {
+                lastZeroNode.setNext(node);  // add the zeros before the number
+
+                newHead = zeroNodesHead;
+                prevNode = node;
+
+                // reset the zeros variables to be empty
+                zeroNodesHead = null;
+                lastZeroNode = null;
+
+            } else if (newHead != null && lastZeroNode != null) {
+                lastZeroNode.setNext(node);  // add the zeros before the number
+
+                prevNode.setNext(zeroNodesHead);
+                prevNode = node;
+
+                // reset the zeros variables to be empty
+                zeroNodesHead = null;
+                lastZeroNode = null;
+
+            } else if (newHead == null) {
+                newHead = node;
+                prevNode = newHead;
+            } else {
+                prevNode.setNext(node);
+                prevNode = node;
+            }
+        }
+
+        BigNumber newBigNumber = getBigNumberFromHead(newHead);
+        return newBigNumber;
     }
 
     public BigNumber multBigNumber (BigNumber other) {
