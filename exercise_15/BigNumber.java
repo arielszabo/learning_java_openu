@@ -146,8 +146,51 @@ public class BigNumber {
     }
 
     public BigNumber addLong (long num) {
-        // create a BigNumber
-        return null;
+        // in order to avoid looping twice on the number we won't use the existing method and contractor
+
+        IntNode newHead = null;
+        IntNode prevNode = newHead;
+
+        int reminder = 0; // TODO: change name
+        IntNode thisCurrent = this._head;
+        while (true) {
+
+            int thisCurrentValue;
+            if (thisCurrent == null) {
+                thisCurrentValue = 0;
+            } else {
+                thisCurrentValue = thisCurrent.getValue();
+                thisCurrent = thisCurrent.getNext();
+            }
+
+            int otherCurrentValue = (int)(num % 10);
+            num = num / 10;
+
+            int newNumber = thisCurrentValue + otherCurrentValue + reminder;
+            if (newNumber == 0 & thisCurrent == null & num == 0) { // reached the end of both numbers
+                break;
+            }
+
+            if (newNumber > 9) {
+                reminder = 1;
+                newNumber = newNumber % 10;
+            } else {
+                reminder = 0;
+            }
+
+            IntNode node = new IntNode(newNumber);
+            if (newHead == null) {
+                newHead = node;
+                prevNode = newHead;
+            } else {
+                prevNode.setNext(node);
+                prevNode = node;
+            }
+
+
+        }
+        BigNumber newBigNumber = getBigNumberFromHead(newHead);
+        return newBigNumber;
     }
 
     public BigNumber subtractBigNumber (BigNumber other) {
