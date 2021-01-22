@@ -46,30 +46,48 @@ public class BigNumber {
     }
 
     public int compareTo (BigNumber other) {
-        if (this.length() < other.length()){
-            return -1;
-        } else if (this.length() > other.length()) {
-            return 1;
+        // default value of false which will change in the following while loop:
+        boolean isThisDigitBigger = false;
+        boolean isOtherDigitBigger = false;
+
+        IntNode thisNode = _head;
+        IntNode otherNode = other._head;
+
+        while (true){
+            if (thisNode == null && otherNode == null){
+                break;
+            }
+            if (thisNode == null){ // this node ended but the other node have elements in it
+                return -1;
+            }
+
+            if (otherNode == null) { // the other node ended but this node have elements in it
+                return 1;
+            }
+//        while (thisNode != null){
+            if (thisNode.getValue() > otherNode.getValue()) {
+                isThisDigitBigger = true;
+                isOtherDigitBigger = false;
+
+            } else if (thisNode.getValue() < otherNode.getValue()) {
+                isThisDigitBigger = false;
+                isOtherDigitBigger = true;
+
+            }
+
+            thisNode = thisNode.getNext();
+            otherNode = otherNode.getNext();
+
+
         }
 
-
-        // flip the BigNumber and iterate and compare
-
-        // current
-        // prev = 9
-        // temp = 8
-        // next = 7
-        // 8 - 9
-
-        // go to the end
-        // go backwords and compare
-
-        // this  1234567891234
-        // other 1234657583930
-
-        // this_to_other_diff = 4 - 700
-
-        return 0;
+        if (isThisDigitBigger) {
+            return 1;
+        } else if (isOtherDigitBigger) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
     public BigNumber addBigNumber (BigNumber other) {
